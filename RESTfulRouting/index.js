@@ -52,6 +52,13 @@ app.post('/blogs',(req,res)=>{
     res.redirect('/blogs');
 })
 
+app.get('/blogs/:id', (req, res) => {
+    let { id } = req.params;
+    let foundComment = comments.find(comment => comment.id == id);
+    res.render('show', { foundComment }); 
+});
+
+
 app.listen(8080,()=>{
     console.log('http://localhost:8080/');
 })
