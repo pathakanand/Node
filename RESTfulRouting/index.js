@@ -3,25 +3,30 @@ const { url } = require('inspector');
 const app=express();
 let path=require('path');
 let methodOverride = require('method-override')
+const { v4: uuid } = require('uuid');
 
 let comments = [
     {
-        id:0,
+        // id:0,
+        id:uuid(),
         username: "Akshay" ,
         comment: "kuch nhi"
     },
     {
-        id:1,
+        // id:1,
+        id:uuid(),
         username: "Sachin" ,
         comment: "kaun"
     },
     {
-        id:2,
+        // id:2,
+        id:uuid(),
         username: "Javed" ,
         comment: "laal hai"
     },
     {
-        id:3,
+        // id:3,
+        id:uuid(),
         username: "Ojaswa" ,
         comment: "Puls aagyi puls"
     }
@@ -74,6 +79,14 @@ app.patch('/blogs/:id',(req,res)=>{
     foundComment.comment=comment;
     res.redirect('/blogs');
 })
+
+app.delete('/blogs/:id',(req,res)=>{
+    let {id}=req.params;
+    let newArray=comments.filter((comment)=>{return comment.id!=id})
+    comments=newArray;
+    res.redirect('/blogs');
+})
+
 app.listen(8080,()=>{
     console.log('http://localhost:8080/');
 })

@@ -16,6 +16,9 @@
             <h2>comment is: <%= i.comment %></h2>
             <a href="/blogs/<%= i.id %> ">Show</a>
             <a href="/blogs/<%= i.id %>/edit ">edit</a>
+            <form action="/blogs/<%= i.id %>?_method=delete" method="post">
+                <button>delete</button>
+            </form>
         </div>
     <% } %>
 
