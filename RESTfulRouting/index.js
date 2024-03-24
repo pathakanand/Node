@@ -2,6 +2,7 @@ const express=require('express');
 const { url } = require('inspector');
 const app=express();
 let path=require('path');
+let methodOverride = require('method-override')
 
 let comments = [
     {
@@ -33,6 +34,7 @@ app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'/views'));
 app.use(express.static(path.join(__dirname,'/public')))
 app.use(express.urlencoded({extended:true}));
+app.use(methodOverride('_method')) 
 
 app.get('/',(req,res)=>{
     res.send("<h2>hello ji, kaise ho</h2>")
@@ -47,8 +49,9 @@ app.get('/blog/new',(req,res)=>{
 })
 
 app.post('/blogs',(req,res)=>{
-    let{username,comment}=req.body;
-    comments.push({id:comments.length,username,comment})
+    let{name,comment}=req.body;
+    console.log(req.body);
+    comments.push({id:comments.length,username:name,comment})
     res.redirect('/blogs');
 })
 
@@ -58,7 +61,19 @@ app.get('/blogs/:id', (req, res) => {
     res.render('show', { foundComment }); 
 });
 
+app.get('/blogs/:id/edit',(req,res)=>{
+    let {id}=req.params;
+    let foundComment=comments.find(comment=> comment.id==id);
+    res.render('Edit',{foundComment});
+})
 
+app.patch('/blogs/:id',(req,res)=>{
+    let {id}=req.params;
+    let foundComment=comments.find(comment=> comment.id==id);
+    let {comment}=req.body;
+    foundComment.comment=comment;
+    res.redirect('/blogs');
+})
 app.listen(8080,()=>{
     console.log('http://localhost:8080/');
 })
